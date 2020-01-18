@@ -3,14 +3,18 @@ var game = {
 
     // an object where to store game information
     data: {
-        // score
-        score: 0
+        score: 0,
+
+	start_string: "Ifmmp",
+
+	current_string: "Ifmmp",
+
+	goal_string: "Hello"
     },
 
 
     // Run on page load.
     "onload": function () {
-        console.log(caesarCipher("hello", 1));
         // Initialize the video.
         if (!me.video.init(1400, 1050, { wrapper: "screen", scale: "flex-width" })) {
             alert("Your browser does not support HTML5 canvas.");
@@ -32,6 +36,7 @@ var game = {
 
         // add our player entity in the entity pool
         me.pool.register("mainPlayer", game.PlayerEntity);
+        me.pool.register("InteractEntity", game.InteractEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, "left");
@@ -42,6 +47,7 @@ var game = {
         me.input.bindKey(me.input.KEY.UP, "jump", true);
         me.input.bindKey(me.input.KEY.SPACE, "jump", true);
 
+        me.input.bindKey(me.input.KEY.F, "interact", true);
         // Start the game.
         me.state.change(me.state.PLAY);
     }
