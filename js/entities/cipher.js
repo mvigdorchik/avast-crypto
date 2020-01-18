@@ -1,13 +1,13 @@
 /**
- * a HUD container and child items
+ * a cipher container and child items
  */
 
-game.HUD = game.HUD || {};
+game.cipher = game.cipher || {};
 
 
-game.HUD.Container = me.Container.extend({
+game.cipher.Container = me.Container.extend({
 
-    init: function () {
+    init: function (x, y, level) {
         // call the constructor
         this._super(me.Container, 'init');
 
@@ -18,22 +18,22 @@ game.HUD.Container = me.Container.extend({
         this.floating = true;
 
         // give a name
-        this.name = "HUD";
+        this.name = "cipher";
 
-        // add our child score object at the top left corner
-        this.addChild(new game.HUD.ScoreItem(-10, -10));
+        // add our child text object at the top left corner
+        this.addChild(new game.cipher.text(x, y));
     }
 });
 
 
 /**
- * a basic HUD item to display score
+ * a basic item to display text
  */
-game.HUD.ScoreItem = me.Renderable.extend({
+game.cipher.text = me.Renderable.extend({
     /**
      * constructor
      */
-    init: function (x, y) {
+    init: function (x, y, level) {
 
         // call the parent constructor
         // (size does not matter here)
@@ -46,8 +46,8 @@ game.HUD.ScoreItem = me.Renderable.extend({
         this.font.textAlign = "right";
         this.font.textBaseline = "bottom";
 
-        // local copy of the global score
-        this.score = -1;
+        // local copy of the global start string
+        this.text = "";
     },
 
     /**
@@ -55,20 +55,20 @@ game.HUD.ScoreItem = me.Renderable.extend({
      */
     update: function () {
         // we don't do anything fancy here, so just
-        // return true if the score has been updated
-        if (this.score !== game.data.score) {
-            this.score = game.data.score;
+        // return true if the text has been updated
+        if (this.text !== game.data.current_string) {
+            this.text = game.data.current_string;
             return true;
         }
         return false;
     },
 
     /**
-     * draw the score
+     * draw the text
      */
     draw: function (renderer) {
         // this.pos.x, this.pos.y are the relative position from the screen right bottom
-        this.font.draw(renderer, game.data.score, me.game.viewport.width + this.pos.x, me.game.viewport.height + this.pos.y);
+        this.font.draw(renderer, game.data.current_string, me.game.viewport.width + this.pos.x, me.game.viewport.height + this.pos.y);
     }
 
 });

@@ -3,13 +3,11 @@ var game = {
 
     // an object where to store game information
     data: {
-        score: 0,
-
         start_string: "Ifmmp",
 
         current_string: "Ifmmp",
 
-        goal_string: "Hello"
+        goal_string: "Hello",
     },
 
 

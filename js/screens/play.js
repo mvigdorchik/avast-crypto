@@ -6,20 +6,21 @@ game.PlayScreen = me.ScreenObject.extend({
         // load a level
         me.levelDirector.loadLevel("level_1")
 
-        // reset the score
-        game.data.score = 0;
+        // reset the cipher
+        game.data.cipher = "Hello";
 
-        // Add our HUD to the game world, add it last so that this is on top of the rest.
+        // Add our cipher to the game world, add it last so that this is on top of the rest.
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
-        this.HUD = new game.HUD.Container();
-        me.game.world.addChild(this.HUD);
+        // Position x and y need to be negative integers relative to bottom right
+        this.cipher = new game.cipher.Container(-650, -400);
+        me.game.world.addChild(this.cipher);
     },
 
     /**
      *  action to perform when leaving this screen (state change)
      */
     onDestroyEvent: function () {
-        // remove the HUD from the game world
-        me.game.world.removeChild(this.HUD);
+        // remove the cipher from the game world
+        me.game.world.removeChild(this.cipher);
     }
 });
