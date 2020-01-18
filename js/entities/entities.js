@@ -11,8 +11,8 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, 'init', [x, y, settings]);
 
         // max walking & jumping speed
-        this.body.setMaxVelocity(3, 15);
-        this.body.setFriction(0.4, 0);
+        this.body.setMaxVelocity(10, 15);
+        this.body.setFriction(5, 0);
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH, 0.4);
@@ -113,9 +113,9 @@ game.InteractEntity = me.CollectableEntity.extend({
         // call the constructor
         this._super(me.CollectableEntity, 'init', [x, y, settings]);
 
-	this.name = "lever"; 
-	// this.body.collisionType = me.collision.types.COLLECTIBLE_OBJECT;
-	// this.body.gravity.y = 0;
+	this.name = "lever";
+
+	this.settings = settings;
     },
 
 
@@ -131,6 +131,7 @@ game.InteractEntity = me.CollectableEntity.extend({
     interactAction: function() {
 	console.log(caesarCipher(game.data.current_string, 1));
 	game.data.current_string = caesarCipher(game.data.current_string, 1);
+
 	return true;
     }
 });
