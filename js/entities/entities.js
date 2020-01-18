@@ -36,6 +36,8 @@ game.PlayerEntity = me.Entity.extend({
      */
     update: function (dt) {
 
+	this.try_interact = me.input.isKeyPressed('interact');
+
         if (me.input.isKeyPressed('left')) {
 
             // flip the sprite on horizontal axis
@@ -89,6 +91,46 @@ game.PlayerEntity = me.Entity.extend({
       */
     onCollision: function (response, other) {
         // Make all other objects solid
+	if (response.b.name === "lever")
+	{
+	    if (this.try_interact) {
+		response.b.interactAction();
+	    }
+	    return false;
+	}
+
+	
         return true;
+    }
+});
+
+game.InteractEntity = me.CollectableEntity.extend({
+
+    /**
+     * constructor
+     */
+    init: function (x, y, settings) {
+        // call the constructor
+        this._super(me.CollectableEntity, 'init', [x, y, settings]);
+
+	this.name = "lever"; 
+	// this.body.collisionType = me.collision.types.COLLECTIBLE_OBJECT;
+	// this.body.gravity.y = 0;
+    },
+
+
+    /**
+      * colision handler
+      * (called when colliding with other objects)
+      */
+    onCollision: function (response, other) {
+	// These are background objects so no need to adjust velocities
+        return false;
+    },
+
+    interactAction: function() {
+	console.log(caesarCipher(game.data.current_string, 1));
+	game.data.current_string = caesarCipher(game.data.current_string, 1);
+	return true;
     }
 });
