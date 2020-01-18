@@ -5,11 +5,11 @@ var game = {
     data: {
         score: 0,
 
-	start_string: "Ifmmp",
+        start_string: "Ifmmp",
 
-	current_string: "Ifmmp",
+        current_string: "Ifmmp",
 
-	goal_string: "Hello"
+        goal_string: "Hello"
     },
 
 
@@ -31,8 +31,14 @@ var game = {
 
     // Run on game resources loaded.
     "loaded": function () {
+        // set the "Play/Ingame" Screen Object
         me.state.set(me.state.MENU, new game.TitleScreen());
+
+        // set the "Play/Ingame" Screen Object
         me.state.set(me.state.PLAY, new game.PlayScreen());
+
+        // set a global fading transition for the screen
+        me.state.transition("fade", "#FFFFFF", 250);
 
         // add our player entity in the entity pool
         me.pool.register("mainPlayer", game.PlayerEntity);
@@ -48,7 +54,8 @@ var game = {
         me.input.bindKey(me.input.KEY.SPACE, "jump", true);
 
         me.input.bindKey(me.input.KEY.F, "interact", true);
-        // Start the game.
-        me.state.change(me.state.PLAY);
+
+        // display the menu title
+        me.state.change(me.state.MENU);
     }
 };
