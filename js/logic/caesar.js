@@ -1,3 +1,17 @@
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+function addToChar(char, n) {
+	if (char.match(/[a-z]/i)) {
+	    var ascii = char.charCodeAt(0);
+
+	    if ((ascii >= 65) && (ascii <= 90))
+		char = String.fromCharCode(((ascii - 65 + n) % 26) + 65);
+	    if ((ascii >= 97) && (ascii <= 122))
+		char = String.fromCharCode(((ascii - 97 + n) % 26) + 97);
+
+	    return char;
+	}
+}
 function caesarCipher(s, n) {
     if (n < 0)
 	return caesarCipher(s, n + 26);
@@ -6,17 +20,48 @@ function caesarCipher(s, n) {
 
     for (var i = 0; i < s.length; i++) {
 	var char = s[i];
-
-	if (char.match(/[a-z]/i)) {
-	    var ascii = s.charCodeAt(i);
-
-	    if ((ascii >= 65) && (ascii <= 90))
-		char = String.fromCharCode(((ascii - 65 + n) % 26) + 65);
-	    if ((ascii >= 97) && (ascii <= 122))
-		char = String.fromCharCode(((ascii - 97 + n) % 26) + 97);
-	}
+	char = addToChar(char, n);
 
 	result += char;
+    }
+
+    return result;
+}
+
+function vigenereCipher(s, key) {
+    var result = '';
+
+    for (var i = 0; i < s.length; i++) {
+	var char = s[i];
+	var ascii = key.charCodeAt(i % key.length);
+
+	if ((ascii >= 65) && (ascii <= 90))
+	    ascii = (ascii - 65) % 26;
+	if ((ascii >= 97) && (ascii <= 122))
+	    ascii = (ascii - 97) % 26;
+	char = addToChar(char, ascii + 1);
+
+	result += char;
+    }
+    
+    return result;
+}
+
+function atbashCipher(s) {
+    var result = '';
+    var reversed = alphabet.split("").reverse().join("");
+
+    for (var i = 0; i < s.length ; i++) {
+	var posUpper = alphabet.toUpperCase().indexOf(s[i]);
+	var posLower = alphabet.indexOf(s[i]);
+	if (posLower === -1) {
+	    if (posUpper === -1)
+		result += s[i];
+	    else
+		result += reversed.toUpperCase()[posUpper];
+	}
+	else
+	    result += reversed[posLower];
     }
 
     return result;

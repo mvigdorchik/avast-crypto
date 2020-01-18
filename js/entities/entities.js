@@ -129,8 +129,8 @@ game.InteractEntity = me.CollectableEntity.extend({
     },
 
     interactAction: function() {
-	console.log(caesarCipher(game.data.current_string, 1));
-	game.data.current_string = caesarCipher(game.data.current_string, 1);
+	console.log(atbashCipher(game.data.current_string));
+	game.data.current_string = atbashCipher(game.data.current_string);
 
 	return true;
     }
