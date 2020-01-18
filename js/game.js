@@ -1,4 +1,3 @@
-
 /* Game namespace */
 var game = {
 
@@ -11,6 +10,7 @@ var game = {
 
     // Run on page load.
     "onload": function () {
+        console.log(caesarCipher("hello", 1));
         // Initialize the video.
         if (!me.video.init(1400, 1050, { wrapper: "screen", scale: "flex-width" })) {
             alert("Your browser does not support HTML5 canvas.");
