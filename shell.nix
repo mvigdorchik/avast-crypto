@@ -4,12 +4,10 @@ with pkgs;
 
 let
   inherit (lib) optional optionals;
-
-  nodejs = nodejs-11_x;
 in
 
 mkShell {
-  buildInputs = [ nodejs ];
+  buildInputs = [ nodejs nodePackages.grunt-cli];
 
     # Put the PostgreSQL databases in the project diretory.
     shellHook = ''
