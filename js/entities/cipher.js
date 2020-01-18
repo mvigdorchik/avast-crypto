@@ -7,7 +7,7 @@ game.cipher = game.cipher || {};
 
 game.cipher.Container = me.Container.extend({
 
-    init: function (x, y, level) {
+    init: function (x, y) {
         // call the constructor
         this._super(me.Container, 'init');
 
@@ -33,7 +33,7 @@ game.cipher.text = me.Renderable.extend({
     /**
      * constructor
      */
-    init: function (x, y, level) {
+    init: function (x, y) {
 
         // call the parent constructor
         // (size does not matter here)
@@ -67,8 +67,8 @@ game.cipher.text = me.Renderable.extend({
      * draw the text
      */
     draw: function (renderer) {
-        // this.pos.x, this.pos.y are the relative position from the screen right bottom
-        this.font.draw(renderer, game.data.current_string, me.game.viewport.width + this.pos.x, me.game.viewport.height + this.pos.y);
+        // this.pos.x, this.pos.y are the relative position from the top left
+        this.font.draw(renderer, game.data.current_string, this.pos.x, this.pos.y);
     }
 
 });
