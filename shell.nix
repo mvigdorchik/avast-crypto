@@ -7,7 +7,7 @@ let
 in
 
 mkShell {
-  buildInputs = [ nodejs nodePackages.grunt-cli];
+  buildInputs = [ nodejs nodePackages.typescript nodePackages.grunt-cli nodePackages.typescript-language-server];
 
     # Put the PostgreSQL databases in the project diretory.
     shellHook = ''
