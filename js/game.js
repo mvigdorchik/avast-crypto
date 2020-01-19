@@ -45,6 +45,7 @@ var game = {
         me.pool.register("InteractEntity", game.InteractEntity);
         me.pool.register("ExitEntity", game.ExitEntity);
         me.pool.register("SignEntity", game.SignEntity);
+        me.pool.register("Sign2Entity", game.Sign2Entity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, "left");

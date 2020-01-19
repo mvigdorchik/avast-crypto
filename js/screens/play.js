@@ -4,13 +4,17 @@ game.PlayScreen = me.ScreenObject.extend({
      */
     onResetEvent: function (type) {
         // load a level
-        me.levelDirector.loadLevel("level_caesar")
+        me.levelDirector.loadLevel("level_intro")
+
+        game.signText = new game.Textbox.Container(1380, 100, "You're tasked with testing the security of Crypto castle...");
+        me.game.world.addChild(game.signText);
+
+        game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
+        me.game.world.addChild(game.sign2Text);
 
         game.lever_list = [];
 
         game.data.goal_string = game.getRandomPassword();
-
-        game.spawnEntities(type);
     },
 
     /**
