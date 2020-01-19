@@ -1,17 +1,27 @@
 var alphabet = "abcdefghijklmnopqrstuvwxyz";
 
+var passwords = [
+    "PASSWORD",
+    "HELLO",
+    "H311O",
+    "CHEESE",
+    "N1GHT"
+];
+
 function addToChar(char, n) {
-	if (char.match(/[a-z]/i)) {
-	    var ascii = char.charCodeAt(0);
-
-	    // The extra % operator deals with when the ascii becomes negative which javascript handles stupidly
-	    if ((ascii >= 65) && (ascii <= 90))
-		char = String.fromCharCode(((((ascii - 65 + n) % 26) + 26) % 26) + 65);
-	    if ((ascii >= 97) && (ascii <= 122))
-		char = String.fromCharCode(((((ascii - 97 + n) % 26) + 26) % 26) + 97);
-
-	    return char;
-	}
+    var result = '';
+    if (char.match(/[a-z]/i)) {
+	var ascii = char.charCodeAt(0);
+	
+	// The extra % operator deals with when the ascii becomes negative which javascript handles stupidly
+	if ((ascii >= 65) && (ascii <= 90))
+	    result = String.fromCharCode(((((ascii - 65 + n) % 26) + 26) % 26) + 65);
+	else if ((ascii >= 97) && (ascii <= 122))
+	    result = String.fromCharCode(((((ascii - 97 + n) % 26) + 26) % 26) + 97);
+	
+	return result;
+    } else
+	return char;
 }
 function caesarCipher(s, n) {
     if (n < 0)

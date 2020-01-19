@@ -8,6 +8,8 @@ var game = {
         current_string: "Ifmmp",
 
         goal_string: "Hello",
+
+	key_string: "secret"
     },
 
 

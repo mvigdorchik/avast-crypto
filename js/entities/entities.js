@@ -127,6 +127,7 @@ game.PlayerEntity = me.Entity.extend({
 			"height" : 1000,
 			"width" : 5000,
 			"onLoaded": function() {
+			    game.data.goal_string = game.getRandomPassword();
 			    game.spawnEntities("vigenere");
 			}
 		    }

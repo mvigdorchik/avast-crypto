@@ -8,6 +8,8 @@ game.PlayScreen = me.ScreenObject.extend({
 
         game.lever_list = [];
 
+	game.data.goal_string = game.getRandomPassword();
+	
         game.spawnEntities(type);
     },
 
@@ -35,6 +37,8 @@ game.spawnEntities = function (level_type) {
     var lever;
     if (level_type === "caesar") {
 	console.log("caesar level");
+	game.data.current_string = caesarCipher(game.data.goal_string, Math.floor(Math.random() * 14));
+	game.data.start_string = game.data.current_string;
 
 	lever = me.pool.pull("InteractEntity", 670, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
 	me.game.world.addChild(lever);
@@ -43,6 +47,8 @@ game.spawnEntities = function (level_type) {
 	me.game.world.addChild(game.signText);
     } else if (level_type === "vigenere") {
 	console.log("vigenere level");
+	game.data.current_string = vigenereCipher(game.data.goal_string, game.data.key_string);
+	game.data.start_string = game.data.current_string;
 
 	for (var i = 0; i < game.data.current_string.length; i++) {
 	    lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
@@ -75,4 +81,12 @@ game.getCaesarLever = function (i) {
     return function () {
         game.data.current_string = caesarCipher(game.data.current_string, i);
     };
+};
+
+game.getRandomPassword = function() {
+    return passwords[Math.floor(Math.random() * passwords.length)];
+};
+
+game.getNextLevel = function () {
+    
 };
