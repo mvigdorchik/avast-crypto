@@ -23,11 +23,11 @@ game.PlayScreen = me.ScreenObject.extend({
      */
     onDestroyEvent: function () {
         // remove the cipher from the game world
-	try {
+        try {
             me.game.world.removeChild(game.cipher_text);
-	} catch(err) {
-	    
-	}
+        } catch (err) {
+
+        }
         me.game.world.removeChild(game.exit);
 
         // stop the current audio track
@@ -118,22 +118,44 @@ game.spawnEntities = function (level_type) {
             me.game.world.addChild(game.exit, 2);
             break;
 
-    case "rsa":
-	game.data.rsa_pq_primes = [3, 4];
-	game.data.rsa_pq_disp = getPrimes(4);
-	var rsa_params = RSA(game.data.rsa_pq_primes[0], game.data.rsa_pq_primes[1]);
-	var goal_params = game.generateRSAParams();
-	game.data.rsa_cipher = goal_params[5];
-	game.data.rsa_goal_result = RSADecrypt(game.data.rsa_cipher, goal_params[4], game.data.rsa_goal_n);
-	console.log("RSA level!");
+        case "rsa":
+            game.data.rsa_pq_primes = [3, 4];
+            game.data.rsa_pq_disp = getPrimes(4);
+            var rsa_params = RSA(game.data.rsa_pq_primes[0], game.data.rsa_pq_primes[1]);
+            var goal_params = game.generateRSAParams();
+            game.data.rsa_cipher = goal_params[5];
+            game.data.rsa_goal_result = RSADecrypt(game.data.rsa_cipher, goal_params[4], game.data.rsa_goal_n);
+            console.log("RSA level!");
 
-        for (var i = 0; i < 2; i++) {
-            lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getRSALever(i, -1), game.getRSALever(i, 1));
-            me.game.world.addChild(lever, 2);
-        }
-        game.lever_list.push(lever);
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
-	me.game.world.addChild(game.exit, 2);
+            for (var i = 0; i < 2; i++) {
+                lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getRSALever(i, -1), game.getRSALever(i, 1));
+                me.game.world.addChild(lever, 2);
+            }
+            game.lever_list.push(lever);
+
+            game.signText = new game.Textbox.Container(100, 100, "RSA is hard, even for Optimus Prime.");
+            me.game.world.addChild(game.signText);
+
+            game.n = new game.RSAText.Container(200, 450, "GOAL N", "rsa_goal_n");
+            me.game.world.addChild(game.n);
+
+            game.p = new game.RSAText.Container(200, 520, "P", "rsa_p");
+            me.game.world.addChild(game.p);
+
+            game.q = new game.RSAText.Container(200, 590, "Q", "rsa_q");
+            me.game.world.addChild(game.q);
+
+            game.pq = new game.RSAText.Container(600, 660, "PxQ", "rsa_n");
+            me.game.world.addChild(game.pq);
+
+            game.d = new game.RSAText.Container(600, 800, "D", "rsa_d");
+            me.game.world.addChild(game.d);
+
+            game.result = new game.RSAText.Container(600, 800, "RESULT", "rsa_result");
+            me.game.world.addChild(game.result);
+
+            game.exit = me.pool.pull("ExitEntity", 1300, groundY - 70, true);
+            me.game.world.addChild(game.exit, 2);
     }
 };
 
@@ -158,17 +180,17 @@ game.getCaesarLever = function (i) {
     };
 };
 
-game.getRSALever = function(i, n) {
+game.getRSALever = function (i, n) {
     return function () {
-	game.data.rsa_pq_primes[i] += n;
-	if (game.data.rsa_pq_primes[i] < 2) game.data.rsa_pq_primes[i] = 2;
-	game.data.rsa_pq_disp[i] = getPrimes(game.data.rsa_pq_primes[i])[1];
-	game.data.rsa_p = game.data.rsa_pq_disp[0];
-	game.data.rsa_q = game.data.rsa_pq_disp[1];
-	game.data.rsa_n = game.data.rsa_p * game.data.rsa_q;
-	var results = RSA(game.data.rsa_p, game.data.rsa_q, game.data.rsa_cipher);
-	game.data.rsa_result = RSADecrypt(game.data.rsa_cipher, results[2], game.data.rsa_n);
-	console.table(game.data);
+        game.data.rsa_pq_primes[i] += n;
+        if (game.data.rsa_pq_primes[i] < 2) game.data.rsa_pq_primes[i] = 2;
+        game.data.rsa_pq_disp[i] = getPrimes(game.data.rsa_pq_primes[i])[1];
+        game.data.rsa_p = game.data.rsa_pq_disp[0];
+        game.data.rsa_q = game.data.rsa_pq_disp[1];
+        game.data.rsa_n = game.data.rsa_p * game.data.rsa_q;
+        var results = RSA(game.data.rsa_p, game.data.rsa_q, game.data.rsa_cipher);
+        game.data.rsa_result = RSADecrypt(game.data.rsa_cipher, results[2], game.data.rsa_n);
+        console.table(game.data);
 
     };
 };
@@ -178,25 +200,25 @@ game.getRandomPassword = function () {
 };
 
 game.getNextLevel = function () {
-    switch(game.level) {
-    case "intro":
-	game.level = "rsa";
-	break;
-    case "caesar":
-	game.level = "atbash";
-	break;
-    case "atbash":
-	game.level = "vigenere";
-	break;
-    case "vigenere":
-	game.level = "vigenere";
-	break;
-    case "rsa":
-	game.level = "rsa";
-	game.data.difficulty++;
-	break;
-    default:
-	game.level = "caesar";
+    switch (game.level) {
+        case "intro":
+            game.level = "caesar";
+            break;
+        case "caesar":
+            game.level = "atbash";
+            break;
+        case "atbash":
+            game.level = "vigenere";
+            break;
+        case "vigenere":
+            game.level = "rsa";
+            break;
+        case "rsa":
+            game.level = "rsa";
+            game.data.difficulty++;
+            break;
+        default:
+            game.level = "caesar";
     }
 
     return game.level;
@@ -204,10 +226,10 @@ game.getNextLevel = function () {
 
 game.generateRSAParams = function () {
     var difficulty = game.data.difficulty;
-    var pq = getPrimes(difficulty+4);
+    var pq = getPrimes(difficulty + 4);
     var message = "";
     for (var i = 0; i < difficulty + 3; i++) {
-	message += i.toString();
+        message += i.toString();
     }
     var m = parseInt(message);
 
