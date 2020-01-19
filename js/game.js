@@ -52,9 +52,11 @@ var game = {
         me.input.bindKey(me.input.KEY.UP, "jump", true);
         me.input.bindKey(me.input.KEY.SPACE, "jump", true);
 
-        me.input.bindKey(me.input.KEY.F, "interact", true);
+        me.input.bindKey(me.input.KEY.F, "interact_one", true);
+        me.input.bindKey(me.input.KEY.G, "interact_two", true);
 
         // display the menu title
         me.state.change(me.state.MENU);
     }
+
 };

@@ -36,7 +36,8 @@ game.PlayerEntity = me.Entity.extend({
      */
     update: function (dt) {
 
-        this.try_interact = me.input.isKeyPressed('interact');
+	this.try_interact_one = me.input.isKeyPressed('interact_one');
+	this.try_interact_two = me.input.isKeyPressed('interact_two');
 
         if (me.input.isKeyPressed('left')) {
 
@@ -91,14 +92,30 @@ game.PlayerEntity = me.Entity.extend({
       */
     onCollision: function (response, other) {
         // Make all other objects solid
-        if (response.b.name === "lever") {
-            if (this.try_interact) {
-                response.b.interactAction();
-            }
-            return false;
-        }
+	if (response.b.name === "lever")
+	{
+	    // Frame delay to ensure switch doesnt snap right back
+	    if (this.frame_delay > 0)
+		this.frame_delay++;
+	    if (this.try_interact_one) {
+		response.b.interactActionOne();
+		response.b.renderable.setCurrentAnimation("left");
+		this.frame_delay = 1;
+	    }
+	    else if (this.try_interact_two) {
+		response.b.interactActionTwo();
+		response.b.renderable.setCurrentAnimation("right");
+		this.frame_delay = 1;
+	    }
+	    else if (this.frame_delay === 3)
+	    {
+		response.b.renderable.setCurrentAnimation("center");
+		this.frame_delay = 0;
+	    }
+	    return false;
+	}
 
-
+	
         return true;
     }
 });
@@ -108,13 +125,30 @@ game.InteractEntity = me.CollectableEntity.extend({
     /**
      * constructor
      */
-    init: function (x, y, settings) {
+    init: function (x, y, interactFunctionOne, interactFunctionTwo) {
         // call the constructor
-        this._super(me.CollectableEntity, 'init', [x, y, settings]);
+	var updated_settings = {};
+	updated_settings.image = "switch";
+	updated_settings.width = 70;
+	updated_settings.height = 70;
+	updated_settings.framewidth = 70;
+	updated_settings.x = x;
+	updated_settings.y = y;
+	updated_settings.z = 2;
+	updated_settings.Visible = true;
+        this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
-        this.name = "lever";
+	this.name = "lever";
+	this.interactActionOne = interactFunctionOne;
+	this.interactActionTwo = interactFunctionTwo;
 
-        this.settings = settings;
+
+        this.renderable.addAnimation("center", [0]);
+        this.renderable.addAnimation("right", [1]);
+        this.renderable.addAnimation("left", [2]);
+
+        // set the standing animation as default
+        this.renderable.setCurrentAnimation("center");
     },
 
 
@@ -127,12 +161,11 @@ game.InteractEntity = me.CollectableEntity.extend({
         return false;
     },
 
-    interactAction: function () {
-        console.log(atbashCipher(game.data.current_string));
-        game.data.current_string = atbashCipher(game.data.current_string);
+    // interactAction: function() {
+    // 	game.data.current_string = atbashCipher(game.data.current_string);
 
-        return true;
-    }
+    // 	return true;
+    // }
 });
 
 game.ExitEntity = me.CollectableEntity.extend({
