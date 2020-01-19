@@ -1,7 +1,7 @@
 var alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 var passwords = [
-    "PASSWORD",
+    "PASSWD",
     "HELLO",
     "H311O",
     "CHEESE",

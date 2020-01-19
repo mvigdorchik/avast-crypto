@@ -2,19 +2,23 @@ game.PlayScreen = me.ScreenObject.extend({
     /**
      *  action to perform on state change
      */
-    onResetEvent: function (type) {
+    onResetEvent: function () {
         // load a level
-        me.levelDirector.loadLevel("level_intro")
+        me.levelDirector.loadLevel("level_" + game.level);
 
-        game.signText = new game.Textbox.Container(1380, 100, "You're tasked with testing the security of Crypto castle...");
-        me.game.world.addChild(game.signText);
-
-        game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
-        me.game.world.addChild(game.sign2Text);
+	if (game.level === "intro")
+	{
+            game.signText = new game.Textbox.Container(1380, 100, "You're tasked with testing the security of Crypto castle...");
+            me.game.world.addChild(game.signText);
+	    
+            game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
+            me.game.world.addChild(game.sign2Text);
+	}
 
         game.lever_list = [];
 
         game.data.goal_string = game.getRandomPassword();
+        game.spawnEntities(game.level);
     },
 
     /**
@@ -23,6 +27,7 @@ game.PlayScreen = me.ScreenObject.extend({
     onDestroyEvent: function () {
         // remove the cipher from the game world
         me.game.world.removeChild(game.cipher_text);
+        me.game.world.removeChild(game.exit);
         var lever;
         for (lever of game.lever_list)
             me.game.world.removeChild(lever);
@@ -33,9 +38,14 @@ game.spawnEntities = function (level_type) {
     var groundY = 700;
 
     var lever;
-    if (level_type === "caesar") {
-        console.log("caesar level");
-        game.data.current_string = caesarCipher(game.data.goal_string, Math.floor(Math.random() * 14));
+
+    game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
+    me.game.world.addChild(game.exit);
+
+    switch (level_type) {
+    case "caesar":
+	console.log("caesar level");
+        game.data.current_string = caesarCipher(game.data.goal_string, Math.ceil(Math.random() * 14));
         game.data.start_string = game.data.current_string;
 
         lever = me.pool.pull("InteractEntity", 670, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
@@ -46,8 +56,9 @@ game.spawnEntities = function (level_type) {
 
         game.cipher_text = new game.cipher.Container(895, 540);
         me.game.world.addChild(game.cipher_text);
+	break;
 
-    } else if (level_type === "vigenere") {
+    case "vigenere":
         console.log("vigenere level");
         game.data.current_string = vigenereCipher(game.data.goal_string, game.data.key_string);
         game.data.start_string = game.data.current_string;
@@ -63,12 +74,30 @@ game.spawnEntities = function (level_type) {
 
         game.cipher_text = new game.cipher.Container(750, 650);
         me.game.world.addChild(game.cipher_text);
+	break;
+
+    case "atbash":
+        console.log("atbash level");
+        game.data.current_string = atbashCipher(game.data.goal_string);
+        game.data.start_string = game.data.current_string;
+
+        for (var i = 0; i < game.data.current_string.length; i++) {
+            lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
+            me.game.world.addChild(lever);
+        }
+
+        game.lever_list.push(lever);
+        game.signText = new game.Textbox.Container(800, 100, "Atbash has a nice symmetric quality to it");
+        me.game.world.addChild(game.signText);
+
+        game.cipher_text = new game.cipher.Container(750, 650);
+        me.game.world.addChild(game.cipher_text);
+	break;
     }
-}
+};
 
 game.getVigenereLever = function (j, n) {
     return function () {
-        // game.data.current_string[i] = addToChar(game.data.current_string[i], n);
         var result = '';
         for (var i = 0; i < game.data.current_string.length; i++) {
             if (i == j) {
@@ -93,5 +122,19 @@ game.getRandomPassword = function () {
 };
 
 game.getNextLevel = function () {
+    switch(game.level) {
+    case "caesar":
+	game.level = "atbash";
+	break;
+    case "atbash":
+	game.level = "vigenere";
+	break;
+    case "vigenere":
+	game.level = "vigenere";
+	break;
+    default:
+	game.level = "caesar";
+    }
 
+    return game.level;
 };

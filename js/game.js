@@ -37,6 +37,8 @@ var game = {
         // set the "Play/Ingame" Screen Object
         me.state.set(me.state.PLAY, new game.PlayScreen());
 
+	me.state.set(me.state.USER, new game.Transition());
+
         // set a global fading transition for the screen
         me.state.transition("fade", "#FFFFFF", 250);
 

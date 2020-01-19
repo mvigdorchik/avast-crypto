@@ -97,59 +97,54 @@ game.PlayerEntity = me.Entity.extend({
     onCollision: function (response, other) {
         // Make all other objects solid
         switch (response.b.name) {
-            case "lever":
-                // Frame delay to ensure switch doesnt snap right back
-                if (this.frame_delay > 0)
-                    this.frame_delay++;
-                if (this.try_interact_one) {
-                    response.b.interactActionOne();
-                    response.b.renderable.setCurrentAnimation("left");
-                    this.frame_delay = 1;
-                }
-                else if (this.try_interact_two) {
-                    response.b.interactActionTwo();
-                    response.b.renderable.setCurrentAnimation("right");
-                    this.frame_delay = 1;
-                }
-                else if (this.frame_delay === 3) {
-                    response.b.renderable.setCurrentAnimation("center");
-                    this.frame_delay = 0;
-                }
-                return false;
-            case "exit":
-                if (response.b.open) {
-                    me.game.world.addChild(new me.LevelEntity(
-                        this.renderable.pos.x, this.renderable.pos.y, {
-                        "duration": 250,
-                        "color": "#fff",
-                        "to": "level_1",
-                        "height": 1000,
-                        "width": 5000,
-                        "onLoaded": function () {
-                            game.data.goal_string = game.getRandomPassword();
-                            game.spawnEntities("vigenere");
-                        }
-                    }
-                    ));
-                    console.log("Level Complete!");
-                }
-                return false;
-            case "sign":
-                this.setTime = new Date();
-                game.signText.setVisible();
-                return false;
-            case "sign2":
-                this.setTime = new Date();
-                game.sign2Text.setVisible();
-                return false;
-            default:
-                if (this.setTime !== null) {
-                    this.currentTime = new Date();
-                    if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
-                        game.signText.setInvisible();
-                        game.sign2Text.setInvisible();
-                        this.setTime = null;
-                    }
+        case "lever":
+            // Frame delay to ensure switch doesnt snap right back
+            if (this.frame_delay > 0)
+                this.frame_delay++;
+            if (this.try_interact_one) {
+                response.b.interactActionOne();
+                response.b.renderable.setCurrentAnimation("left");
+                this.frame_delay = 1;
+            }
+            else if (this.try_interact_two) {
+                response.b.interactActionTwo();
+                response.b.renderable.setCurrentAnimation("right");
+                this.frame_delay = 1;
+            }
+            else if (this.frame_delay === 3) {
+                response.b.renderable.setCurrentAnimation("center");
+                this.frame_delay = 0;
+            }
+            return false;
+        case "exit":
+	    if (response.b.open)
+	    {
+		var cur_level = game.level;
+		var next_level = game.level;
+		game.data.goal_string = game.getRandomPassword();
+		if (next_level === cur_level)
+		{
+		    me.state.change(me.state.USER);
+		} else {
+		    me.state.change(me.state.USER);
+		}
+	    }
+	    return false;
+	case "sign":
+            this.setTime = new Date();
+            game.signText.setVisible();
+            return false;
+	case "sign2":
+            this.setTime = new Date();
+            game.signText2.setVisible();
+            return false;
+        default:
+            if (this.setTime !== null) {
+                this.currentTime = new Date();
+                if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
+                    game.signText.setInvisible();
+                    game.signText2.setInvisible();
+                    this.setTime = null;
                 }
         }
         return true;
@@ -196,12 +191,6 @@ game.InteractEntity = me.CollectableEntity.extend({
         // These are background objects so no need to adjust velocities
         return false;
     },
-
-    // interactAction: function() {
-    // 	game.data.current_string = atbashCipher(game.data.current_string);
-
-    // 	return true;
-    // }
 });
 
 game.ExitEntity = me.CollectableEntity.extend({
@@ -209,18 +198,25 @@ game.ExitEntity = me.CollectableEntity.extend({
     /**
      * constructor
      */
-    init: function (x, y, settings) {
+    init: function (x, y) {
         // call the constructor
-        this._super(me.CollectableEntity, 'init', [x, y, settings]);
-        this.always_update = true;
+	this.always_update = true;
 
-        this.name = "exit";
-
-        this.settings = settings;
+        var updated_settings = {};
+        updated_settings.image = "door";
+        updated_settings.width = 70;
+        updated_settings.height = 140;
+        updated_settings.framewidth = 70;
+        updated_settings.x = x;
+        updated_settings.y = y;
+        updated_settings.z = 2;
+        updated_settings.Visible = true;
+        this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
         this.renderable.addAnimation("closed", [0]);
         this.renderable.addAnimation("open", [1]);
-        this.open = false;
+	this.open = false;
+	this.name = "exit";
 
         this.renderable.setCurrentAnimation("closed");
     },

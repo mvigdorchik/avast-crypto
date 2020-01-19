@@ -29,7 +29,8 @@ game.TitleScreen = me.ScreenObject.extend({
                 // play something on tap / enter
                 // this will unlock audio on mobile devices
                 me.audio.play("cling");
-                me.state.change(me.state.PLAY, "caesar");
+		game.level = "caesar";
+                me.state.change(me.state.PLAY);
             }
         });
     },
@@ -42,5 +43,21 @@ game.TitleScreen = me.ScreenObject.extend({
         me.input.unbindPointer(me.input.pointer.LEFT);
         me.event.unsubscribe(this.handler);
         me.game.world.removeChild(this.titleText);
+    }
+});
+
+
+game.Transition = me.ScreenObject.extend({
+    /**
+   * action to perform on state change
+   */
+    onResetEvent: function () {
+	me.state.change(me.state.PLAY);
+    },
+
+    /**
+     * action to perform when leaving this screen (state change)
+     */
+    onDestroyEvent: function () {
     }
 });
