@@ -119,15 +119,9 @@ game.PlayerEntity = me.Entity.extend({
         case "exit":
 	    if (response.b.open)
 	    {
-		var cur_level = game.level;
-		var next_level = game.level;
+		game.getNextLevel();
 		game.data.goal_string = game.getRandomPassword();
-		if (next_level === cur_level)
-		{
-		    me.state.change(me.state.USER);
-		} else {
-		    me.state.change(me.state.USER);
-		}
+		me.state.change(me.state.USER);
 	    }
 	    return false;
 	case "sign":
@@ -136,18 +130,19 @@ game.PlayerEntity = me.Entity.extend({
             return false;
 	case "sign2":
             this.setTime = new Date();
-            game.signText2.setVisible();
+            game.sign2Text.setVisible();
             return false;
         default:
             if (this.setTime !== null) {
                 this.currentTime = new Date();
                 if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
                     game.signText.setInvisible();
-                    game.signText2.setInvisible();
+                    game.sign2Text.setInvisible();
                     this.setTime = null;
                 }
-        }
-        return true;
+            }
+            return true;
+	} 
     }
 });
 

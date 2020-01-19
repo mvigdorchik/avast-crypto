@@ -29,7 +29,7 @@ game.TitleScreen = me.ScreenObject.extend({
                 // play something on tap / enter
                 // this will unlock audio on mobile devices
                 me.audio.play("cling");
-		game.level = "caesar";
+		game.level = "intro";
                 me.state.change(me.state.PLAY);
             }
         });
