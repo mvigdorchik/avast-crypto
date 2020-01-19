@@ -81,6 +81,8 @@ game.PlayerEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
+	    
+
         // handle collisions against other shapes
         me.collision.check(this);
 
@@ -95,39 +97,55 @@ game.PlayerEntity = me.Entity.extend({
     onCollision: function (response, other) {
         // Make all other objects solid
         switch (response.b.name) {
-            case "lever":
-                // Frame delay to ensure switch doesnt snap right back
-                if (this.frame_delay > 0)
-                    this.frame_delay++;
-                if (this.try_interact_one) {
-                    response.b.interactActionOne();
-                    response.b.renderable.setCurrentAnimation("left");
-                    this.frame_delay = 1;
+        case "lever":
+            // Frame delay to ensure switch doesnt snap right back
+            if (this.frame_delay > 0)
+                this.frame_delay++;
+            if (this.try_interact_one) {
+                response.b.interactActionOne();
+                response.b.renderable.setCurrentAnimation("left");
+                this.frame_delay = 1;
+            }
+            else if (this.try_interact_two) {
+                response.b.interactActionTwo();
+                response.b.renderable.setCurrentAnimation("right");
+                this.frame_delay = 1;
+            }
+            else if (this.frame_delay === 3) {
+                response.b.renderable.setCurrentAnimation("center");
+                this.frame_delay = 0;
+            }
+            return false;
+        case "exit":
+	    if (response.b.open)
+	    {
+		me.game.world.addChild(new me.LevelEntity(
+		    this.renderable.pos.x, this.renderable.pos.y, {
+			"duration" : 250,
+			"color" : "#fff",
+			"to" : "level_1",
+			"height" : 1000,
+			"width" : 5000,
+			"onLoaded": function() {
+			    game.spawnEntities("vigenere");
+			}
+		    }
+		));
+		console.log("Level Complete!");
+	    }
+	    return false;
+	case "sign":
+            this.setTime = new Date();
+            game.signText.setVisible();
+            return false;
+        default:
+            if (this.setTime !== null) {
+                this.currentTime = new Date();
+                if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
+                    game.signText.setInvisible();
+                    this.setTime = null;
                 }
-                else if (this.try_interact_two) {
-                    response.b.interactActionTwo();
-                    response.b.renderable.setCurrentAnimation("right");
-                    this.frame_delay = 1;
-                }
-                else if (this.frame_delay === 3) {
-                    response.b.renderable.setCurrentAnimation("center");
-                    this.frame_delay = 0;
-                }
-                return false;
-            case "exit":
-                return false;
-            case "sign":
-                this.setTime = new Date();
-                game.signText.setVisible();
-                return false;
-            default:
-                if (this.setTime !== null) {
-                    this.currentTime = new Date();
-                    if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
-                        game.signText.setInvisible();
-                        this.setTime = null;
-                    }
-                }
+            }
         }
         return true;
     }
@@ -189,6 +207,7 @@ game.ExitEntity = me.CollectableEntity.extend({
     init: function (x, y, settings) {
         // call the constructor
         this._super(me.CollectableEntity, 'init', [x, y, settings]);
+	this.always_update = true;
 
         this.name = "exit";
 
@@ -196,10 +215,22 @@ game.ExitEntity = me.CollectableEntity.extend({
 
         this.renderable.addAnimation("closed", [0]);
         this.renderable.addAnimation("open", [1]);
+	this.open = false;
 
-        this.renderable.setCurrentAnimation("closed")
+        this.renderable.setCurrentAnimation("closed");
     },
 
+    update: function (dt) {
+	if (game.data.current_string === game.data.goal_string)
+	{
+	    if (!this.open)
+		this.completeLevel(true);
+	}
+	else if (this.open)
+	    this.completeLevel(false);
+	
+        return (this._super(me.Entity, 'update', [dt]) || this.body.vel.x !== 0 || this.body.vel.y !== 0);
+    },
 
     /**
       * colision handler
@@ -209,6 +240,15 @@ game.ExitEntity = me.CollectableEntity.extend({
         // These are background objects so no need to adjust velocities
         return false;
     },
+
+    completeLevel: function(state) {
+	this.open = state;
+	if (this.open)
+	    this.renderable.setCurrentAnimation("open");
+	else
+	    this.renderable.setCurrentAnimation("closed");
+	
+    }
 
 });
 
