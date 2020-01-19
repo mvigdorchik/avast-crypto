@@ -17,7 +17,7 @@ game.TitleScreen = me.ScreenObject.extend({
         me.game.world.addChild(backgroundImage, 1);
 
         // add a new renderable component with the text
-        this.titleText = new game.Textbox.Container(950, 200, "WELCOME TO CRYPTO CASTLE");
+        this.titleText = new game.Textbox.Container(450, 200, "WELCOME TO CRYPTO CASTLE");
         this.titleText.setVisible();
         me.game.world.addChild(this.titleText);
 
@@ -29,7 +29,7 @@ game.TitleScreen = me.ScreenObject.extend({
                 // play something on tap / enter
                 // this will unlock audio on mobile devices
                 me.audio.play("cling");
-		game.level = "intro";
+                game.level = "intro";
                 me.state.change(me.state.PLAY);
             }
         });
@@ -52,7 +52,7 @@ game.Transition = me.ScreenObject.extend({
    * action to perform on state change
    */
     onResetEvent: function () {
-	me.state.change(me.state.PLAY);
+        me.state.change(me.state.PLAY);
     },
 
     /**

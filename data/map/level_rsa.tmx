@@ -1116,8 +1116,8 @@
    <image width="70" height="70" source="../img/Platformer Art Complete Pack/Request pack/Tiles/wireRight.png"/>
   </tile>
  </tileset>
- <imagelayer id="11" name="background" offsetx="-0.519118" offsety="-85.4926">
-  <image source="../img/dark_background.png" width="1500" height="990"/>
+ <imagelayer id="11" name="background" offsetx="-0.519118" offsety="-311.359">
+  <image source="../img/background.png" width="1400" height="1400"/>
  </imagelayer>
  <layer id="1" name="foreground" width="20" height="15">
   <data encoding="base64">

@@ -43,7 +43,7 @@ game.cipher.text = me.Renderable.extend({
         this.font = new me.BitmapFont(me.loader.getBinary('PressStart2PCipher'), me.loader.getImage('PressStart2PCipher'));
 
         // font alignment to right, bottom
-        this.font.textAlign = "right";
+        this.font.textAlign = "left";
         this.font.textBaseline = "bottom";
 
         // local copy of the global start string

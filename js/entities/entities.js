@@ -73,7 +73,7 @@ game.PlayerEntity = me.Entity.extend({
                 // set current vel to the maximum defined value
                 // gravity will then do the rest
                 this.body.force.y = -this.body.maxVel.y * me.timer.tick;
-                
+
                 this.body.jumping = true;
                 // play jumping audio
                 me.audio.play("jump");
@@ -101,60 +101,59 @@ game.PlayerEntity = me.Entity.extend({
     onCollision: function (response, other) {
         // Make all other objects solid
         switch (response.b.name) {
-        case "lever":
-            // Frame delay to ensure switch doesnt snap right back
-            if (this.frame_delay > 0)
-                this.frame_delay++;
-            if (this.try_interact_one) {
-                response.b.interactActionOne();
-                response.b.renderable.setCurrentAnimation("left");
-                this.frame_delay = 1;
-                
-                // play some audio
-                me.audio.play("lever");
-            }
-            else if (this.try_interact_two) {
-                response.b.interactActionTwo();
-                response.b.renderable.setCurrentAnimation("right");
-                this.frame_delay = 1;
+            case "lever":
+                // Frame delay to ensure switch doesnt snap right back
+                if (this.frame_delay > 0)
+                    this.frame_delay++;
+                if (this.try_interact_one) {
+                    response.b.interactActionOne();
+                    response.b.renderable.setCurrentAnimation("left");
+                    this.frame_delay = 1;
 
-                // play some audio
-                me.audio.play("lever");
-            }
-            else if (this.frame_delay === 3) {
-                response.b.renderable.setCurrentAnimation("center");
-                this.frame_delay = 0;
-            }
-            return false;
-        case "exit":
-	    if (response.b.open)
-	    {
-		game.getNextLevel();
-		game.data.goal_string = game.getRandomPassword();
-		// Ensure that it can't retrigger the goal while the processing happens
-		game.data.current_string = "";
-		me.state.change(me.state.USER);
-	    }
-	    return false;
-	case "sign":
-            this.setTime = new Date();
-            game.signText.setVisible();
-            return false;
-	case "sign2":
-            this.setTime = new Date();
-            game.sign2Text.setVisible();
-            return false;
-        default:
-            if (this.setTime !== null) {
-                this.currentTime = new Date();
-                if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
-                    game.signText.setInvisible();
-                    game.sign2Text.setInvisible();
-                    this.setTime = null;
+                    // play some audio
+                    me.audio.play("lever");
                 }
-            }
-            return true;
-	} 
+                else if (this.try_interact_two) {
+                    response.b.interactActionTwo();
+                    response.b.renderable.setCurrentAnimation("right");
+                    this.frame_delay = 1;
+
+                    // play some audio
+                    me.audio.play("lever");
+                }
+                else if (this.frame_delay === 3) {
+                    response.b.renderable.setCurrentAnimation("center");
+                    this.frame_delay = 0;
+                }
+                return false;
+            case "exit":
+                if (response.b.open) {
+                    game.getNextLevel();
+                    game.data.goal_string = game.getRandomPassword();
+                    // Ensure that it can't retrigger the goal while the processing happens
+                    game.data.current_string = "";
+                    me.state.change(me.state.USER);
+                }
+                return false;
+            case "sign":
+                this.setTime = new Date();
+                game.signText.setVisible();
+                return false;
+            case "sign2":
+                this.setTime = new Date();
+                game.sign2Text.setVisible();
+                return false;
+            default:
+                if (this.setTime !== null) {
+                    this.currentTime = new Date();
+                    if (this.currentTime.getTime() - this.setTime.getTime() > 200) {
+                        game.signText.setInvisible();
+                        game.sign2Text.setInvisible();
+                        this.setTime = null;
+                    }
+                }
+                return true;
+        }
     }
 });
 
@@ -207,14 +206,14 @@ game.ExitEntity = me.CollectableEntity.extend({
      */
     init: function (x, y, drawImage) {
         // call the constructor
-	this.always_update = true;
+        this.always_update = true;
 
         var updated_settings = {};
-	
+
         updated_settings.image = "door";
         updated_settings.width = 70;
         updated_settings.height = 140;
-        updated_settings.framewidth =  drawImage ? 70: 1;
+        updated_settings.framewidth = drawImage ? 70 : 1;
         updated_settings.frameheight = drawImage ? 140 : 1;
         updated_settings.x = x;
         updated_settings.y = y;
@@ -224,8 +223,8 @@ game.ExitEntity = me.CollectableEntity.extend({
 
         this.renderable.addAnimation("closed", [0]);
         this.renderable.addAnimation("open", [1]);
-	this.open = false;
-	this.name = "exit";
+        this.open = false;
+        this.name = "exit";
 
         this.renderable.setCurrentAnimation("closed");
     },
@@ -235,7 +234,7 @@ game.ExitEntity = me.CollectableEntity.extend({
             if (!this.open)
                 //game.level 
                 me.audio.play("door");
-                this.completeLevel(true);
+            this.completeLevel(true);
         }
         else if (this.open)
             this.completeLevel(false);
