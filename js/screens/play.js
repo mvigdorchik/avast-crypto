@@ -136,22 +136,22 @@ game.spawnEntities = function (level_type) {
             game.signText = new game.Textbox.Container(100, 100, "RSA is hard, even for Optimus Prime.");
             me.game.world.addChild(game.signText);
 
-            game.n = new game.RSAText.Container(200, 450, "GOAL N", "rsa_goal_n");
+            game.n = new game.RSAText.Container(350, 460, "GOAL N", "rsa_goal_n");
             me.game.world.addChild(game.n);
 
-            game.p = new game.RSAText.Container(200, 520, "P", "rsa_p");
+            game.p = new game.RSAText.Container(350, 530, "P", "rsa_p");
             me.game.world.addChild(game.p);
 
-            game.q = new game.RSAText.Container(200, 590, "Q", "rsa_q");
+            game.q = new game.RSAText.Container(350, 600, "Q", "rsa_q");
             me.game.world.addChild(game.q);
 
-            game.pq = new game.RSAText.Container(600, 660, "PxQ", "rsa_n");
+            game.pq = new game.RSAText.Container(350, 670, "PxQ", "rsa_n");
             me.game.world.addChild(game.pq);
 
-            game.d = new game.RSAText.Container(600, 800, "D", "rsa_d");
+            game.d = new game.RSAText.Container(800, 600, "D", "rsa_d");
             me.game.world.addChild(game.d);
 
-            game.result = new game.RSAText.Container(600, 800, "RESULT", "rsa_result");
+            game.result = new game.RSAText.Container(800, 670, "RESULT", "rsa_result");
             me.game.world.addChild(game.result);
 
             game.exit = me.pool.pull("ExitEntity", 1300, groundY - 70, true);
@@ -202,7 +202,7 @@ game.getRandomPassword = function () {
 game.getNextLevel = function () {
     switch (game.level) {
         case "intro":
-            game.level = "caesar";
+            game.level = "rsa";
             break;
         case "caesar":
             game.level = "atbash";
@@ -227,11 +227,7 @@ game.getNextLevel = function () {
 game.generateRSAParams = function () {
     var difficulty = game.data.difficulty;
     var pq = getPrimes(difficulty + 4);
-    var message = "";
-    for (var i = 0; i < difficulty + 3; i++) {
-        message += i.toString();
-    }
-    var m = parseInt(message);
+    var m = difficulty * 10;//parseInt(message);
 
     game.data.rsa_goal_n = pq[0] * pq[1];
 
