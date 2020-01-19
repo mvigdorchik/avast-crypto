@@ -40,7 +40,7 @@ game.cipher.text = me.Renderable.extend({
         this._super(me.Renderable, 'init', [x, y, 10, 10]);
 
         // create the font object
-        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'));
+        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2PCipher'), me.loader.getImage('PressStart2PCipher'));
 
         // font alignment to right, bottom
         this.font.textAlign = "right";
