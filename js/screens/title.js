@@ -16,42 +16,9 @@ game.TitleScreen = me.ScreenObject.extend({
         // add to the world container
         me.game.world.addChild(backgroundImage, 1);
 
-        // add a new renderable component with the scrolling text
-        me.game.world.addChild(new (me.Renderable.extend({
-            // constructor
-            init: function () {
-                this._super(me.Renderable, 'init', [0, 0, me.game.viewport.width, me.game.viewport.height]);
-
-                // font for the scrolling text
-                this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'));
-
-                // a tween to animate the arrow
-                this.scrollertween = new me.Tween(this).to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
-
-                this.scroller = "A SMALL STEP BY STEP TUTORIAL FOR GAME CREATION WITH MELONJS       ";
-                this.scrollerpos = 600;
-            },
-
-            // some callback for the tween objects
-            scrollover: function () {
-                // reset to default value
-                this.scrollerpos = 640;
-                this.scrollertween.to({ scrollerpos: -2200 }, 10000).onComplete(this.scrollover.bind(this)).start();
-            },
-
-            update: function (dt) {
-                return true;
-            },
-
-            draw: function (renderer) {
-                this.font.draw(renderer, "PRESS ENTER TO PLAY", 20, 240);
-                this.font.draw(renderer, this.scroller, this.scrollerpos, 440);
-            },
-            onDestroyEvent: function () {
-                //just in case
-                this.scrollertween.stop();
-            }
-        })), 2);
+        // add a new renderable component with the text
+        this.titleText = new game.titleText.Container(950, 200);
+        me.game.world.addChild(this.titleText);
 
         // change to play state on press Enter or click/tap
         me.input.bindKey(me.input.KEY.ENTER, "enter", true);
@@ -73,5 +40,34 @@ game.TitleScreen = me.ScreenObject.extend({
         me.input.unbindKey(me.input.KEY.ENTER);
         me.input.unbindPointer(me.input.pointer.LEFT);
         me.event.unsubscribe(this.handler);
+        me.game.world.removeChild(this.titleText);
     }
+});
+
+game.titleText = game.titleText || {};
+
+game.titleText.Container = me.Container.extend({
+
+    init: function (x, y) {
+        this._super(me.Container, 'init');
+        this.isPersistent = true;
+        this.floating = true;
+        this.name = "titleText";
+        this.addChild(new game.titleText.text(x, y));
+    }
+});
+
+game.titleText.text = me.Renderable.extend({
+    init: function (x, y) {
+        this._super(me.Renderable, 'init', [x, y, 10, 10]);
+        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'));
+        this.font.textAlign = "right";
+        this.font.textBaseline = "bottom";
+        this.text = "WELCOME TO CRYPTO CASTLE"
+    },
+    draw: function (renderer) {
+        // this.pos.x, this.pos.y are the relative position from the top left
+        this.font.draw(renderer, this.text, this.pos.x, this.pos.y);
+    }
+
 });
