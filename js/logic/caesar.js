@@ -77,3 +77,61 @@ function atbashCipher(s) {
 
     return result;
 }
+function gcd(x, y) {
+    if ((typeof x !== 'number') || (typeof y !== 'number')) 
+	return false;
+    x = Math.abs(x);
+    y = Math.abs(y);
+    while(y) {
+	var t = y;
+	y = x % y;
+	x = t;
+    }
+    return x;
+}
+
+function RSA(p, q, M) {
+    var n = p * q;
+    var totient = (p-1) * (q - 1);
+    var e;
+    for (e = 2; e < totient; e++)
+    {
+	if (gcd(e,totient) == 1)
+	    break;
+    }
+    var d = 1;
+    while (true) {
+	if ((d*e) % totient === 1) break;
+
+	d++;
+    }
+
+    console.log(n);
+    console.log(totient);
+    console.log(e);
+    console.log(d);
+    return [n, e, d, Math.pow(M,e) % n];
+}
+
+function getPrimes(n) {
+    var result = [];
+    var count = 0;
+    var i = 2;
+    while (count != n) {
+	var prime = true;
+	for (var j = 2; j < i; j++) {
+	    if (i % j === 0) {
+		prime = false;
+		break;
+	    }
+	}
+	if (prime) {
+	    count++;
+	    result.push(i);
+	    console.log(result);
+	}
+	i++;
+    }
+
+    return result.slice(-2);
+}

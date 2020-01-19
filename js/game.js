@@ -12,6 +12,13 @@ var game = {
         key_string: "secret",
 
         padding: 0,
+	rsa_public: [1, 2], //First element is n, second is e
+
+	rsa_cipher : 2,
+	rsa_d: 2,
+	rsa_pq_primes: [1,1],
+	rsa_pq_disp: [2, 2],
+	rsa_result: 3
     },
 
 

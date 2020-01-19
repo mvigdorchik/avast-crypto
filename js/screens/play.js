@@ -113,6 +113,20 @@ game.spawnEntities = function (level_type) {
             game.exit = me.pool.pull("ExitEntity", 1300, groundY - 70, true);
             me.game.world.addChild(game.exit, 2);
             break;
+
+    case "rsa":
+	game.data.rsa_pq_primes = [3, 4];
+	game.data.rsa_pq_disp = getPrimes(4);
+	var rsa_params = RSA(game.data.rsa_pq_primes[0], game.data.rsa_pq_primes[1]);
+	console.log("RSA level!");
+
+        for (var i = 0; i < 2; i++) {
+            lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getRSALever(i, -1), game.getRSALever(i, 1));
+            me.game.world.addChild(lever, 2);
+        }
+        game.lever_list.push(lever);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
+	me.game.world.addChild(game.exit, 2);
     }
 };
 
@@ -137,27 +151,52 @@ game.getCaesarLever = function (i) {
     };
 };
 
+game.getRSALever = function(i, n) {
+    return function () {
+	game.data.rsa_pq_primes[i] += n;
+	if (game.data.rsa_pq_primes[i] < 2) game.data.rsa_pq_primes[i] = 2;
+	game.data.rsa_pq_disp[i] = getPrimes(game.data.rsa_pq_primes[i])[1];
+	game.data.rsa_result = RSA(game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1], game.data.rsa_cipher);
+	console.table(game.data);
+    };
+};
+
 game.getRandomPassword = function () {
     return passwords[Math.floor(Math.random() * passwords.length)];
 };
 
 game.getNextLevel = function () {
-    switch (game.level) {
-        case "intro":
-            game.level = "caesar";
-            break;
-        case "caesar":
-            game.level = "atbash";
-            break;
-        case "atbash":
-            game.level = "vigenere";
-            break;
-        case "vigenere":
-            game.level = "vigenere";
-            break;
-        default:
-            game.level = "caesar";
+    switch(game.level) {
+    case "intro":
+	game.level = "rsa";
+	break;
+    case "caesar":
+	game.level = "atbash";
+	break;
+    case "atbash":
+	game.level = "vigenere";
+	break;
+    case "vigenere":
+	game.level = "vigenere";
+	break;
+    case "rsa":
+	game.level = "rsa";
+	break;
+    default:
+	game.level = "caesar";
     }
 
     return game.level;
+};
+
+game.generateRSAParams = function () {
+    var difficulty = game.data.difficulty;
+    var pq = getPrimes(difficulty+3);
+    var message = "";
+    for (var i = 0; i < defficulty + 2; i++) {
+	message.push(i.toString);
+    }
+    var m = parseInt(message);
+
+    return pq + RSA(pq[0], pq[1], m);
 };
