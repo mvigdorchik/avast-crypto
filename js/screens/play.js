@@ -67,7 +67,7 @@ game.spawnEntities = function (level_type) {
 
             game.exit = me.pool.pull("ExitEntity", 1300, groundY - 70, true);
             me.game.world.addChild(game.exit, 2);
-            game.signText = new game.Textbox.Container(100, 100, "Can you break a Caesar cipher?");
+            game.signText = new game.Textbox.Container(100, 100, "Can you break a Caesar cipher? (use keys f and g)");
             me.game.world.addChild(game.signText);
 
             game.cipher_text = new game.cipher.Container(500 + game.data.padding, 540);
@@ -87,7 +87,7 @@ game.spawnEntities = function (level_type) {
             game.exit = me.pool.pull("ExitEntity", 1300, groundY - 70, true);
             me.game.world.addChild(game.exit, 2);
             game.lever_list.push(lever);
-            game.signText = new game.Textbox.Container(100, 100, "Vigenere is a little harder...");
+            game.signText = new game.Textbox.Container(100, 100, "This time there's a key - it's secret.");
             me.game.world.addChild(game.signText);
 
             game.cipher_text = new game.cipher.Container(425 + game.data.padding, 610);
@@ -105,7 +105,7 @@ game.spawnEntities = function (level_type) {
             }
 
             game.lever_list.push(lever);
-            game.signText = new game.Textbox.Container(100, 100, "Atbash has a nice symmetric quality to it");
+            game.signText = new game.Textbox.Container(100, 100, "Atbash has a nice symmetric quality to it.");
             me.game.world.addChild(game.signText);
 
             game.cipher_text = new game.cipher.Container(500 + game.data.padding, 540);
