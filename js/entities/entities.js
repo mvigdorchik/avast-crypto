@@ -214,11 +214,11 @@ game.ExitEntity = me.CollectableEntity.extend({
         updated_settings.image = "door";
         updated_settings.width = 70;
         updated_settings.height = 140;
-        updated_settings.framewidth = 1;
-        updated_settings.frameheight = 1;
+        updated_settings.framewidth =  drawImage ? 70: 1;
+        updated_settings.frameheight = drawImage ? 140 : 1;
         updated_settings.x = x;
         updated_settings.y = y;
-        updated_settings.z = 2;
+        updated_settings.z = 1;
         updated_settings.Visible = drawImage;
         this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
