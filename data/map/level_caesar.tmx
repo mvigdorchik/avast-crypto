@@ -1139,23 +1139,8 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="12" name="exit">
-  <object id="25" name="ExitEntity" x="1260" y="630" width="70" height="140">
-   <properties>
-    <property name="framewidth" type="int" value="70"/>
-    <property name="image" value="door"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="6" name="switch" offsetx="-78" offsety="0"/>
- <objectgroup id="4" name="player">
-  <object id="1" name="mainPlayer" x="70" y="640" width="64" height="128">
-   <properties>
-    <property name="framewidth" type="int" value="64"/>
-    <property name="image" value="player_walk"/>
-   </properties>
-  </object>
- </objectgroup>
+ <objectgroup id="4" name="player"/>
  <objectgroup id="5" name="collision">
   <object id="16" x="0" y="0" width="1397.16" height="418.44"/>
   <object id="19" x="0" y="770.686" width="1397.16" height="276.596"/>

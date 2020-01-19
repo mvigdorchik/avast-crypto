@@ -1189,9 +1189,6 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="15" name="exit">
-  <object id="30" name="ExitEntity" x="1260" y="630" width="70" height="140"/>
- </objectgroup>
  <objectgroup id="5" name="collision">
   <object id="16" x="2.51912" y="32.7485" width="1397.16" height="418.44"/>
   <object id="19" x="0" y="770.686" width="1397.16" height="276.596"/>

@@ -1142,14 +1142,6 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="14" name="exit">
-  <object id="31" name="ExitEntity" x="1261.09" y="631.398" width="70" height="140">
-   <properties>
-    <property name="framewidth" type="int" value="70"/>
-    <property name="image" value="door"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="4" name="player">
   <object id="1" name="mainPlayer" x="70" y="650" width="70" height="120">
    <properties>
