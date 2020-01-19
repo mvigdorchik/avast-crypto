@@ -195,19 +195,21 @@ game.ExitEntity = me.CollectableEntity.extend({
     /**
      * constructor
      */
-    init: function (x, y) {
+    init: function (x, y, drawImage) {
         // call the constructor
 	this.always_update = true;
 
         var updated_settings = {};
+	
         updated_settings.image = "door";
         updated_settings.width = 70;
         updated_settings.height = 140;
-        updated_settings.framewidth = 70;
+        updated_settings.framewidth = 1;
+        updated_settings.frameheight = 1;
         updated_settings.x = x;
         updated_settings.y = y;
         updated_settings.z = 2;
-        updated_settings.Visible = true;
+        updated_settings.Visible = drawImage;
         this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
         this.renderable.addAnimation("closed", [0]);

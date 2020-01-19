@@ -41,7 +41,7 @@ game.spawnEntities = function (level_type) {
         game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
         me.game.world.addChild(game.sign2Text);
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-145);
+	game.exit = me.pool.pull("ExitEntity", 913, 552, false);
 	me.game.world.addChild(game.exit);
 	// Draw text off screen so cleanup doesnt complain
         game.cipher_text = new game.cipher.Container(10000, 10000);
@@ -55,7 +55,7 @@ game.spawnEntities = function (level_type) {
         lever = me.pool.pull("InteractEntity", 670, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
         me.game.world.addChild(lever);
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
 	me.game.world.addChild(game.exit);
         game.signText = new game.Textbox.Container(800, 100, "Can you break a Caesar cipher?");
         me.game.world.addChild(game.signText);
@@ -74,7 +74,7 @@ game.spawnEntities = function (level_type) {
             me.game.world.addChild(lever);
         }
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
 	me.game.world.addChild(game.exit);
         game.lever_list.push(lever);
         game.signText = new game.Textbox.Container(800, 100, "Vigenere is a little harder...");
@@ -100,7 +100,7 @@ game.spawnEntities = function (level_type) {
 
         game.cipher_text = new game.cipher.Container(750, 650);
         me.game.world.addChild(game.cipher_text);
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
 	me.game.world.addChild(game.exit);
 	break;
     }
