@@ -110,7 +110,17 @@ game.InteractEntity = me.CollectableEntity.extend({
      */
     init: function (x, y, settings) {
         // call the constructor
-        this._super(me.CollectableEntity, 'init', [x, y, settings]);
+	var updated_settings = settings;
+	updated_settings.image = "switchLeft";
+	updated_settings.width = 70;
+	updated_settings.height = 70;
+	updated_settings.framewidth = 70;
+	updated_settings.x = x;
+	updated_settings.y = y;
+	updated_settings.z = 2;
+	updated_settings.Visible = true;
+	console.log(settings);
+        this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
         this.name = "lever";
 

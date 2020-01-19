@@ -11,6 +11,8 @@ game.PlayScreen = me.ScreenObject.extend({
         // Position x and y need to be negative integers relative to bottom right
         this.cipher = new game.cipher.Container(750, 650);
         me.game.world.addChild(this.cipher);
+
+	this.spawnEntities("caesar");
     },
 
     /**
@@ -19,5 +21,16 @@ game.PlayScreen = me.ScreenObject.extend({
     onDestroyEvent: function () {
         // remove the cipher from the game world
         me.game.world.removeChild(this.cipher);
+    },
+
+    "spawnEntities": function(level_type) {
+	var groundY = 665;
+
+	if(level_type === "caesar") {
+	    console.log("entities spawned");
+	    var settings = {};
+	    var lever = me.pool.pull("InteractEntity", 400, groundY, settings);
+	    me.game.world.addChild(lever);
+	}
     }
 });
