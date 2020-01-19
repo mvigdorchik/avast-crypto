@@ -184,6 +184,7 @@ game.ExitEntity = me.CollectableEntity.extend({
         this.settings = settings;
 
         this.renderable.addAnimation("closed", [0]);
+        this.renderable.addAnimation("open", [1]);
 
         this.renderable.setCurrentAnimation("closed")
     },
