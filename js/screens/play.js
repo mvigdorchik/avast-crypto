@@ -41,7 +41,7 @@ game.spawnEntities = function (level_type) {
         game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
         me.game.world.addChild(game.sign2Text);
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-140);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-145);
 	me.game.world.addChild(game.exit);
 	// Draw text off screen so cleanup doesnt complain
         game.cipher_text = new game.cipher.Container(10000, 10000);
