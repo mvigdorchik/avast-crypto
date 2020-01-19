@@ -118,6 +118,9 @@ game.spawnEntities = function (level_type) {
 	game.data.rsa_pq_primes = [3, 4];
 	game.data.rsa_pq_disp = getPrimes(4);
 	var rsa_params = RSA(game.data.rsa_pq_primes[0], game.data.rsa_pq_primes[1]);
+	var goal_params = game.generateRSAParams();
+	game.data.rsa_cipher = goal_params[5];
+	game.data.rsa_goal_result = RSADecrypt(game.data.rsa_cipher, goal_params[4], game.data.rsa_goal_n);
 	console.log("RSA level!");
 
         for (var i = 0; i < 2; i++) {
@@ -156,8 +159,13 @@ game.getRSALever = function(i, n) {
 	game.data.rsa_pq_primes[i] += n;
 	if (game.data.rsa_pq_primes[i] < 2) game.data.rsa_pq_primes[i] = 2;
 	game.data.rsa_pq_disp[i] = getPrimes(game.data.rsa_pq_primes[i])[1];
-	game.data.rsa_result = RSA(game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1], game.data.rsa_cipher);
+	var results = RSA(game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1], game.data.rsa_cipher);
+	game.data.rsa_result = RSADecrypt(game.data.rsa_cipher, results[2], game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1]);
 	console.table(game.data);
+
+	game.data.rsa_p = game.data.rsa_pq_disp[0];
+	game.data.rsa_q = game.data.rsa_pq_disp[1];
+	game.data.rsa_n = game.data.rsa_p * game.data.rsa_q;
     };
 };
 
@@ -181,6 +189,7 @@ game.getNextLevel = function () {
 	break;
     case "rsa":
 	game.level = "rsa";
+	game.data.difficulty++;
 	break;
     default:
 	game.level = "caesar";
@@ -191,12 +200,15 @@ game.getNextLevel = function () {
 
 game.generateRSAParams = function () {
     var difficulty = game.data.difficulty;
-    var pq = getPrimes(difficulty+3);
+    var pq = getPrimes(difficulty+4);
     var message = "";
-    for (var i = 0; i < defficulty + 2; i++) {
-	message.push(i.toString);
+    for (var i = 0; i < difficulty + 3; i++) {
+	message += i.toString();
     }
     var m = parseInt(message);
 
-    return pq + RSA(pq[0], pq[1], m);
+    game.data.rsa_goal_n = pq[0] * pq[1];
+
+    console.log(pq);
+    return pq.concat(RSA(pq[0], pq[1], m));
 };

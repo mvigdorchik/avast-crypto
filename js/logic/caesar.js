@@ -106,11 +106,11 @@ function RSA(p, q, M) {
 	d++;
     }
 
-    console.log(n);
-    console.log(totient);
-    console.log(e);
-    console.log(d);
     return [n, e, d, Math.pow(M,e) % n];
+}
+
+function RSADecrypt(c,d,n) {
+    return Math.pow(c,d) % n;
 }
 
 function getPrimes(n) {
@@ -128,7 +128,6 @@ function getPrimes(n) {
 	if (prime) {
 	    count++;
 	    result.push(i);
-	    console.log(result);
 	}
 	i++;
     }

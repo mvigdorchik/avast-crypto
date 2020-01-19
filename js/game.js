@@ -13,12 +13,18 @@ var game = {
 
         padding: 0,
 	rsa_public: [1, 2], //First element is n, second is e
+	difficulty: 0,
 
 	rsa_cipher : 2,
 	rsa_d: 2,
 	rsa_pq_primes: [1,1],
-	rsa_pq_disp: [2, 2],
-	rsa_result: 3
+	rsa_pq_disp: [2,2],
+	rsa_p: 2,
+	rsa_q: 2,
+	rsa_n: 4,
+	rsa_result: 3,
+	rsa_goal_n : 5,
+	rsa_goal_result : -1
     },
 
 
