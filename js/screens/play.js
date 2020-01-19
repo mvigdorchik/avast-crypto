@@ -37,11 +37,11 @@ game.PlayScreen = me.ScreenObject.extend({
         } else if (level_type === "vigenere") {
             console.log("vigenere level");
 
-            for (var i = 0; i < game.data.current_string.length; i++) {
-                lever = me.pool.pull("InteractEntity", 400 + 100 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
-                me.game.world.addChild(lever);
-            }
-        }
+	    for (var i = 0; i < game.data.current_string.length; i++) {
+		lever = me.pool.pull("InteractEntity", 400 + 140*i, groundY, game.getVigenereLever(i,-1), game.getVigenereLever(i,1));
+		me.game.world.addChild(lever);
+	    }
+	}
     }
 });
 

@@ -4,10 +4,11 @@ function addToChar(char, n) {
 	if (char.match(/[a-z]/i)) {
 	    var ascii = char.charCodeAt(0);
 
+	    // The extra % operator deals with when the ascii becomes negative which javascript handles stupidly
 	    if ((ascii >= 65) && (ascii <= 90))
-		char = String.fromCharCode(((ascii - 65 + n) % 26) + 65);
+		char = String.fromCharCode(((((ascii - 65 + n) % 26) + 26) % 26) + 65);
 	    if ((ascii >= 97) && (ascii <= 122))
-		char = String.fromCharCode(((ascii - 97 + n) % 26) + 97);
+		char = String.fromCharCode(((((ascii - 97 + n) % 26) + 26) % 26) + 97);
 
 	    return char;
 	}
@@ -36,9 +37,9 @@ function vigenereCipher(s, key) {
 	var ascii = key.charCodeAt(i % key.length);
 
 	if ((ascii >= 65) && (ascii <= 90))
-	    ascii = (ascii - 65) % 26;
+	    ascii = (((ascii - 65) % 26) + 26) % 26;
 	if ((ascii >= 97) && (ascii <= 122))
-	    ascii = (ascii - 97) % 26;
+	    ascii = (((ascii - 97) % 26) + 26) % 26;
 	char = addToChar(char, ascii + 1);
 
 	result += char;
