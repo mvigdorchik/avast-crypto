@@ -121,7 +121,8 @@ game.PlayerEntity = me.Entity.extend({
 	    {
 		game.getNextLevel();
 		game.data.goal_string = game.getRandomPassword();
-		game.data.current_string = ""; // Ensure that it can't retrigger the goal while the processing happens
+		// Ensure that it can't retrigger the goal while the processing happens
+		game.data.current_string = "";
 		me.state.change(me.state.USER);
 	    }
 	    return false;
