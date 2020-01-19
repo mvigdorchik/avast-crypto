@@ -36,8 +36,8 @@ game.PlayerEntity = me.Entity.extend({
      */
     update: function (dt) {
 
-	this.try_interact_one = me.input.isKeyPressed('interact_one');
-	this.try_interact_two = me.input.isKeyPressed('interact_two');
+        this.try_interact_one = me.input.isKeyPressed('interact_one');
+        this.try_interact_two = me.input.isKeyPressed('interact_two');
 
         if (me.input.isKeyPressed('left')) {
 
@@ -92,30 +92,32 @@ game.PlayerEntity = me.Entity.extend({
       */
     onCollision: function (response, other) {
         // Make all other objects solid
-	if (response.b.name === "lever")
-	{
-	    // Frame delay to ensure switch doesnt snap right back
-	    if (this.frame_delay > 0)
-		this.frame_delay++;
-	    if (this.try_interact_one) {
-		response.b.interactActionOne();
-		response.b.renderable.setCurrentAnimation("left");
-		this.frame_delay = 1;
-	    }
-	    else if (this.try_interact_two) {
-		response.b.interactActionTwo();
-		response.b.renderable.setCurrentAnimation("right");
-		this.frame_delay = 1;
-	    }
-	    else if (this.frame_delay === 3)
-	    {
-		response.b.renderable.setCurrentAnimation("center");
-		this.frame_delay = 0;
-	    }
-	    return false;
-	}
-
-	
+        switch (response.b.name) {
+            case "lever":
+                // Frame delay to ensure switch doesnt snap right back
+                if (this.frame_delay > 0)
+                    this.frame_delay++;
+                if (this.try_interact_one) {
+                    response.b.interactActionOne();
+                    response.b.renderable.setCurrentAnimation("left");
+                    this.frame_delay = 1;
+                }
+                else if (this.try_interact_two) {
+                    response.b.interactActionTwo();
+                    response.b.renderable.setCurrentAnimation("right");
+                    this.frame_delay = 1;
+                }
+                else if (this.frame_delay === 3) {
+                    response.b.renderable.setCurrentAnimation("center");
+                    this.frame_delay = 0;
+                }
+                return false;
+            case "exit":
+                return false;
+            case "sign":
+                console.log("SIGN COLLISION");
+                return false;
+        }
         return true;
     }
 });
@@ -127,20 +129,20 @@ game.InteractEntity = me.CollectableEntity.extend({
      */
     init: function (x, y, interactFunctionOne, interactFunctionTwo) {
         // call the constructor
-	var updated_settings = {};
-	updated_settings.image = "switch";
-	updated_settings.width = 70;
-	updated_settings.height = 70;
-	updated_settings.framewidth = 70;
-	updated_settings.x = x;
-	updated_settings.y = y;
-	updated_settings.z = 2;
-	updated_settings.Visible = true;
+        var updated_settings = {};
+        updated_settings.image = "switch";
+        updated_settings.width = 70;
+        updated_settings.height = 70;
+        updated_settings.framewidth = 70;
+        updated_settings.x = x;
+        updated_settings.y = y;
+        updated_settings.z = 2;
+        updated_settings.Visible = true;
         this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
-	this.name = "lever";
-	this.interactActionOne = interactFunctionOne;
-	this.interactActionTwo = interactFunctionTwo;
+        this.name = "lever";
+        this.interactActionOne = interactFunctionOne;
+        this.interactActionTwo = interactFunctionTwo;
 
 
         this.renderable.addAnimation("center", [0]);
@@ -196,4 +198,19 @@ game.ExitEntity = me.CollectableEntity.extend({
         return false;
     },
 
+});
+
+game.SignEntity = me.CollectableEntity.extend({
+    init: function (x, y, settings) {
+        this._super(me.CollectableEntity, 'init', [x, y, settings]);
+
+        this.name = "sign";
+
+        this.settings = settings;
+    },
+
+    onCollision: function (response, other) {
+        // These are background objects so no need to adjust velocities
+        return false;
+    },
 });
