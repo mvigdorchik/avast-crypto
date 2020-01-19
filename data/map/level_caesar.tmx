@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="20" height="15" tilewidth="70" tileheight="70" infinite="0" nextlayerid="14" nextobjectid="27">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="20" height="15" tilewidth="70" tileheight="70" infinite="0" nextlayerid="14" nextobjectid="29">
  <tileset firstgid="1" name="Base" tilewidth="70" tileheight="146" tilecount="172" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
@@ -1140,7 +1140,15 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="switch" offsetx="-78" offsety="0"/>
- <objectgroup id="4" name="player"/>
+ <objectgroup id="4" name="player">
+  <object id="27" name="mainPlayer" x="70" y="650" width="70" height="120">
+   <properties>
+    <property name="framewidth" type="int" value="70"/>
+    <property name="image" value="player_walk"/>
+   </properties>
+  </object>
+  <object id="28" x="482" y="1186"/>
+ </objectgroup>
  <objectgroup id="5" name="collision">
   <object id="16" x="0" y="0" width="1397.16" height="418.44"/>
   <object id="19" x="0" y="770.686" width="1397.16" height="276.596"/>
