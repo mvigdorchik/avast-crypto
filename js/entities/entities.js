@@ -108,9 +108,9 @@ game.InteractEntity = me.CollectableEntity.extend({
     /**
      * constructor
      */
-    init: function (x, y, settings) {
+    init: function (x, y, interactFunction) {
         // call the constructor
-	var updated_settings = settings;
+	var updated_settings = {};
 	updated_settings.image = "switchLeft";
 	updated_settings.width = 70;
 	updated_settings.height = 70;
@@ -119,12 +119,10 @@ game.InteractEntity = me.CollectableEntity.extend({
 	updated_settings.y = y;
 	updated_settings.z = 2;
 	updated_settings.Visible = true;
-	console.log(settings);
         this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
-        this.name = "lever";
-
-        this.settings = settings;
+	this.name = "lever";
+	this.interactAction = interactFunction;
     },
 
 
@@ -137,12 +135,11 @@ game.InteractEntity = me.CollectableEntity.extend({
         return false;
     },
 
-    interactAction: function () {
-        console.log(atbashCipher(game.data.current_string));
-        game.data.current_string = atbashCipher(game.data.current_string);
+    // interactAction: function() {
+    // 	game.data.current_string = atbashCipher(game.data.current_string);
 
-        return true;
-    }
+    // 	return true;
+    // }
 });
 
 game.ExitEntity = me.CollectableEntity.extend({

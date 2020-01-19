@@ -24,13 +24,24 @@ game.PlayScreen = me.ScreenObject.extend({
     },
 
     "spawnEntities": function(level_type) {
-	var groundY = 665;
+	var groundY = 700;
 
 	if(level_type === "caesar") {
 	    console.log("entities spawned");
-	    var settings = {};
-	    var lever = me.pool.pull("InteractEntity", 400, groundY, settings);
+	    var lever = me.pool.pull("InteractEntity", 400, groundY, game.getCaesarLever(2));
 	    me.game.world.addChild(lever);
 	}
     }
 });
+
+game.getVigenereLever = function(i) {
+    return function() {
+	game.data.current_string[i] = addToChar(game.data.curent_string[i], 1);
+    };
+};
+
+game.getCaesarLever = function(i) {
+    return function() {
+	game.data.current_string = caesarCipher(game.data.current_string, i);
+    };
+};
