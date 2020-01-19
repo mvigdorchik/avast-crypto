@@ -28,7 +28,7 @@ game.PlayScreen = me.ScreenObject.extend({
 
 	if(level_type === "caesar") {
 	    console.log("entities spawned");
-	    var lever = me.pool.pull("InteractEntity", 400, groundY, game.getCaesarLever(2));
+	    var lever = me.pool.pull("InteractEntity", 400, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
 	    me.game.world.addChild(lever);
 	}
     }
