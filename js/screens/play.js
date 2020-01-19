@@ -6,6 +6,9 @@ game.PlayScreen = me.ScreenObject.extend({
         // load a level
         me.levelDirector.loadLevel("level_" + game.level);
 
+        // play the audio track
+        me.audio.playTrack("dst-inertexponent");
+
         game.lever_list = [];
 
         game.data.goal_string = game.getRandomPassword();
@@ -19,6 +22,10 @@ game.PlayScreen = me.ScreenObject.extend({
         // remove the cipher from the game world
         me.game.world.removeChild(game.cipher_text);
         me.game.world.removeChild(game.exit);
+
+        // stop the current audio track
+        me.audio.stopTrack();
+        
         var lever;
         for (lever of game.lever_list)
             me.game.world.removeChild(lever);
