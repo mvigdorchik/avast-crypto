@@ -23,7 +23,11 @@ game.PlayScreen = me.ScreenObject.extend({
      */
     onDestroyEvent: function () {
         // remove the cipher from the game world
-        me.game.world.removeChild(game.cipher_text);
+	try {
+            me.game.world.removeChild(game.cipher_text);
+	} catch(err) {
+	    
+	}
         me.game.world.removeChild(game.exit);
 
         // stop the current audio track
