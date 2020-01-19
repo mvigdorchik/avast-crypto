@@ -68,7 +68,7 @@ game.cipher.text = me.Renderable.extend({
      */
     draw: function (renderer) {
         // this.pos.x, this.pos.y are the relative position from the top left
-        this.font.draw(renderer, game.data.current_string, this.pos.x, this.pos.y);
+        this.font.draw(renderer, game.data.start_string + " -> " + game.data.current_string, this.pos.x, this.pos.y);
     }
 
 });
