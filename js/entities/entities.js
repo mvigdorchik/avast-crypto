@@ -230,7 +230,7 @@ game.ExitEntity = me.CollectableEntity.extend({
     },
 
     update: function (dt) {
-        if (game.data.current_string === game.data.goal_string) {
+        if (game.data.current_string === game.data.goal_string || game.data.rsa_result === game.data.rsa_goal_result) {
             if (!this.open)
                 //game.level 
                 me.audio.play("door");

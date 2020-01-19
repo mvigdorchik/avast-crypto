@@ -159,13 +159,13 @@ game.getRSALever = function(i, n) {
 	game.data.rsa_pq_primes[i] += n;
 	if (game.data.rsa_pq_primes[i] < 2) game.data.rsa_pq_primes[i] = 2;
 	game.data.rsa_pq_disp[i] = getPrimes(game.data.rsa_pq_primes[i])[1];
-	var results = RSA(game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1], game.data.rsa_cipher);
-	game.data.rsa_result = RSADecrypt(game.data.rsa_cipher, results[2], game.data.rsa_pq_disp[0], game.data.rsa_pq_disp[1]);
-	console.table(game.data);
-
 	game.data.rsa_p = game.data.rsa_pq_disp[0];
 	game.data.rsa_q = game.data.rsa_pq_disp[1];
 	game.data.rsa_n = game.data.rsa_p * game.data.rsa_q;
+	var results = RSA(game.data.rsa_p, game.data.rsa_q, game.data.rsa_cipher);
+	game.data.rsa_result = RSADecrypt(game.data.rsa_cipher, results[2], game.data.rsa_n);
+	console.table(game.data);
+
     };
 };
 
