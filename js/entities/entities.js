@@ -28,6 +28,8 @@ game.PlayerEntity = me.Entity.extend({
 
         // set the standing animation as default
         this.renderable.setCurrentAnimation("stand");
+
+        this.setTime = null;
     },
 
 
@@ -115,8 +117,17 @@ game.PlayerEntity = me.Entity.extend({
             case "exit":
                 return false;
             case "sign":
-                console.log("SIGN COLLISION");
+                this.setTime = new Date();
+                game.signText.setVisible();
                 return false;
+            default:
+                if (this.setTime !== null) {
+                    this.currentTime = new Date();
+                    if (this.currentTime.getTime() - this.setTime.getTime() > 500) {
+                        game.signText.setInvisible();
+                        this.setTime = null;
+                    }
+                }
         }
         return true;
     }

@@ -34,14 +34,20 @@ game.PlayScreen = me.ScreenObject.extend({
 
             lever = me.pool.pull("InteractEntity", 670, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
             me.game.world.addChild(lever);
+
+            game.signText = new game.Textbox.Container(800, 100, "Can you break a Caesar cipher?");
+            me.game.world.addChild(game.signText);
         } else if (level_type === "vigenere") {
             console.log("vigenere level");
 
-	    for (var i = 0; i < game.data.current_string.length; i++) {
-		lever = me.pool.pull("InteractEntity", 400 + 140*i, groundY, game.getVigenereLever(i,-1), game.getVigenereLever(i,1));
-		me.game.world.addChild(lever);
-	    }
-	}
+            for (var i = 0; i < game.data.current_string.length; i++) {
+                lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
+                me.game.world.addChild(lever);
+            }
+
+            game.signText = new game.Textbox.Container(800, 100, "Vigenere is a little harder...");
+            me.game.world.addChild(game.signText);
+        }
     }
 });
 

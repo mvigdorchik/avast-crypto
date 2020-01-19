@@ -17,7 +17,8 @@ game.TitleScreen = me.ScreenObject.extend({
         me.game.world.addChild(backgroundImage, 1);
 
         // add a new renderable component with the text
-        this.titleText = new game.titleText.Container(950, 200);
+        this.titleText = new game.Textbox.Container(950, 200, "WELCOME TO CRYPTO CASTLE");
+        this.titleText.setVisible();
         me.game.world.addChild(this.titleText);
 
         // change to play state on press Enter or click/tap
@@ -42,32 +43,4 @@ game.TitleScreen = me.ScreenObject.extend({
         me.event.unsubscribe(this.handler);
         me.game.world.removeChild(this.titleText);
     }
-});
-
-game.titleText = game.titleText || {};
-
-game.titleText.Container = me.Container.extend({
-
-    init: function (x, y) {
-        this._super(me.Container, 'init');
-        this.isPersistent = true;
-        this.floating = true;
-        this.name = "titleText";
-        this.addChild(new game.titleText.text(x, y));
-    }
-});
-
-game.titleText.text = me.Renderable.extend({
-    init: function (x, y) {
-        this._super(me.Renderable, 'init', [x, y, 10, 10]);
-        this.font = new me.BitmapFont(me.loader.getBinary('PressStart2P'), me.loader.getImage('PressStart2P'));
-        this.font.textAlign = "right";
-        this.font.textBaseline = "bottom";
-        this.text = "WELCOME TO CRYPTO CASTLE"
-    },
-    draw: function (renderer) {
-        // this.pos.x, this.pos.y are the relative position from the top left
-        this.font.draw(renderer, this.text, this.pos.x, this.pos.y);
-    }
-
 });
