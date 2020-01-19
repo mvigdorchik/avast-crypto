@@ -36,7 +36,7 @@ game.PlayerEntity = me.Entity.extend({
      */
     update: function (dt) {
 
-	this.try_interact = me.input.isKeyPressed('interact');
+        this.try_interact = me.input.isKeyPressed('interact');
 
         if (me.input.isKeyPressed('left')) {
 
@@ -91,15 +91,14 @@ game.PlayerEntity = me.Entity.extend({
       */
     onCollision: function (response, other) {
         // Make all other objects solid
-	if (response.b.name === "lever")
-	{
-	    if (this.try_interact) {
-		response.b.interactAction();
-	    }
-	    return false;
-	}
+        if (response.b.name === "lever") {
+            if (this.try_interact) {
+                response.b.interactAction();
+            }
+            return false;
+        }
 
-	
+
         return true;
     }
 });
@@ -113,9 +112,9 @@ game.InteractEntity = me.CollectableEntity.extend({
         // call the constructor
         this._super(me.CollectableEntity, 'init', [x, y, settings]);
 
-	this.name = "lever";
+        this.name = "lever";
 
-	this.settings = settings;
+        this.settings = settings;
     },
 
 
@@ -124,14 +123,44 @@ game.InteractEntity = me.CollectableEntity.extend({
       * (called when colliding with other objects)
       */
     onCollision: function (response, other) {
-	// These are background objects so no need to adjust velocities
+        // These are background objects so no need to adjust velocities
         return false;
     },
 
-    interactAction: function() {
-	console.log(atbashCipher(game.data.current_string));
-	game.data.current_string = atbashCipher(game.data.current_string);
+    interactAction: function () {
+        console.log(atbashCipher(game.data.current_string));
+        game.data.current_string = atbashCipher(game.data.current_string);
 
-	return true;
+        return true;
     }
+});
+
+game.ExitEntity = me.CollectableEntity.extend({
+
+    /**
+     * constructor
+     */
+    init: function (x, y, settings) {
+        // call the constructor
+        this._super(me.CollectableEntity, 'init', [x, y, settings]);
+
+        this.name = "exit";
+
+        this.settings = settings;
+
+        this.renderable.addAnimation("closed", [0]);
+
+        this.renderable.setCurrentAnimation("closed")
+    },
+
+
+    /**
+      * colision handler
+      * (called when colliding with other objects)
+      */
+    onCollision: function (response, other) {
+        // These are background objects so no need to adjust velocities
+        return false;
+    },
+
 });
