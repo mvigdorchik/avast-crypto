@@ -72,7 +72,11 @@ game.PlayerEntity = me.Entity.extend({
             if (!this.body.jumping && !this.body.falling) {
                 // set current vel to the maximum defined value
                 // gravity will then do the rest
-                this.body.force.y = -this.body.maxVel.y
+                this.body.force.y = -this.body.maxVel.y * me.timer.tick;
+                
+                this.body.jumping = true;
+                // play jumping audio
+                me.audio.play("jump");
             }
         } else {
             this.body.force.y = 0;
@@ -105,11 +109,17 @@ game.PlayerEntity = me.Entity.extend({
                 response.b.interactActionOne();
                 response.b.renderable.setCurrentAnimation("left");
                 this.frame_delay = 1;
+                
+                // play some audio
+                me.audio.play("lever");
             }
             else if (this.try_interact_two) {
                 response.b.interactActionTwo();
                 response.b.renderable.setCurrentAnimation("right");
                 this.frame_delay = 1;
+
+                // play some audio
+                me.audio.play("lever");
             }
             else if (this.frame_delay === 3) {
                 response.b.renderable.setCurrentAnimation("center");
@@ -121,6 +131,8 @@ game.PlayerEntity = me.Entity.extend({
 	    {
 		game.getNextLevel();
 		game.data.goal_string = game.getRandomPassword();
+		// Ensure that it can't retrigger the goal while the processing happens
+		game.data.current_string = "";
 		me.state.change(me.state.USER);
 	    }
 	    return false;
@@ -193,19 +205,21 @@ game.ExitEntity = me.CollectableEntity.extend({
     /**
      * constructor
      */
-    init: function (x, y) {
+    init: function (x, y, drawImage) {
         // call the constructor
 	this.always_update = true;
 
         var updated_settings = {};
+	
         updated_settings.image = "door";
         updated_settings.width = 70;
         updated_settings.height = 140;
-        updated_settings.framewidth = 70;
+        updated_settings.framewidth =  drawImage ? 70: 1;
+        updated_settings.frameheight = drawImage ? 140 : 1;
         updated_settings.x = x;
         updated_settings.y = y;
-        updated_settings.z = 2;
-        updated_settings.Visible = true;
+        updated_settings.z = 1;
+        updated_settings.Visible = drawImage;
         this._super(me.CollectableEntity, 'init', [x, y, updated_settings]);
 
         this.renderable.addAnimation("closed", [0]);
@@ -219,6 +233,8 @@ game.ExitEntity = me.CollectableEntity.extend({
     update: function (dt) {
         if (game.data.current_string === game.data.goal_string) {
             if (!this.open)
+                //game.level 
+                me.audio.play("door");
                 this.completeLevel(true);
         }
         else if (this.open)

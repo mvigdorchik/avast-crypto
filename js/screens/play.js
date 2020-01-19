@@ -6,6 +6,9 @@ game.PlayScreen = me.ScreenObject.extend({
         // load a level
         me.levelDirector.loadLevel("level_" + game.level);
 
+        // play the audio track
+        me.audio.playTrack("dst-inertexponent");
+
         game.lever_list = [];
 
         game.data.goal_string = game.getRandomPassword();
@@ -19,6 +22,10 @@ game.PlayScreen = me.ScreenObject.extend({
         // remove the cipher from the game world
         me.game.world.removeChild(game.cipher_text);
         me.game.world.removeChild(game.exit);
+
+        // stop the current audio track
+        me.audio.stopTrack();
+        
         var lever;
         for (lever of game.lever_list)
             me.game.world.removeChild(lever);
@@ -41,7 +48,7 @@ game.spawnEntities = function (level_type) {
         game.sign2Text = new game.Textbox.Container(1280, 100, "To pass each level you'll need to crack the cipher...");
         me.game.world.addChild(game.sign2Text);
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-140);
+	game.exit = me.pool.pull("ExitEntity", 913, 552, false);
 	me.game.world.addChild(game.exit);
 	// Draw text off screen so cleanup doesnt complain
         game.cipher_text = new game.cipher.Container(10000, 10000);
@@ -53,10 +60,10 @@ game.spawnEntities = function (level_type) {
         game.data.start_string = game.data.current_string;
 
         lever = me.pool.pull("InteractEntity", 670, groundY, game.getCaesarLever(-1), game.getCaesarLever(1));
-        me.game.world.addChild(lever);
+        me.game.world.addChild(lever, 2);
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
-	me.game.world.addChild(game.exit);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
+	me.game.world.addChild(game.exit, 2);
         game.signText = new game.Textbox.Container(800, 100, "Can you break a Caesar cipher?");
         me.game.world.addChild(game.signText);
 
@@ -71,11 +78,11 @@ game.spawnEntities = function (level_type) {
 
         for (var i = 0; i < game.data.current_string.length; i++) {
             lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
-            me.game.world.addChild(lever);
+            me.game.world.addChild(lever, 2);
         }
 
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
-	me.game.world.addChild(game.exit);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
+	me.game.world.addChild(game.exit, 2);
         game.lever_list.push(lever);
         game.signText = new game.Textbox.Container(800, 100, "Vigenere is a little harder...");
         me.game.world.addChild(game.signText);
@@ -91,7 +98,7 @@ game.spawnEntities = function (level_type) {
 
         for (var i = 0; i < game.data.current_string.length; i++) {
             lever = me.pool.pull("InteractEntity", 400 + 140 * i, groundY, game.getVigenereLever(i, -1), game.getVigenereLever(i, 1));
-            me.game.world.addChild(lever);
+            me.game.world.addChild(lever, 2);
         }
 
         game.lever_list.push(lever);
@@ -100,8 +107,8 @@ game.spawnEntities = function (level_type) {
 
         game.cipher_text = new game.cipher.Container(750, 650);
         me.game.world.addChild(game.cipher_text);
-	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70);
-	me.game.world.addChild(game.exit);
+	game.exit = me.pool.pull("ExitEntity", 1300, groundY-70, true);
+	me.game.world.addChild(game.exit, 2);
 	break;
     }
 };
