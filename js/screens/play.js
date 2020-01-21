@@ -202,7 +202,7 @@ game.getRandomPassword = function () {
 game.getNextLevel = function () {
     switch (game.level) {
         case "intro":
-            game.level = "rsa";
+            game.level = "caesar";
             break;
         case "caesar":
             game.level = "atbash";
